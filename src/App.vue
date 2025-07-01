@@ -1,33 +1,21 @@
 <template>
   <div class="chatgpt-app">
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <button class="new-chat">+ New Chat</button>
-      </div>
-      <div class="sidebar-history">
-        <p class="sidebar-title">History</p>
-        <ul>
-          <li class="sidebar-item">Chat 1</li>
-          <li class="sidebar-item">Chat 2</li>
-        </ul>
-      </div>
-      <div class="sidebar-footer">
-        <button class="settings">⚙️ Settings</button>
-      </div>
-    </aside>
+    
     <main class="main-chat">
-      <ChatHeader />
-      <div class="chat-messages" ref="messagesContainer">
-        <ChatMessage
-          v-for="(msg, idx) in messages"
-          :key="idx"
-          :message="msg"
-        />
-        <div v-if="loading" class="loading-message">
-          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <div class="chat-container">
+        <ChatHeader />
+        <div class="chat-messages" ref="messagesContainer">
+          <ChatMessage
+            v-for="(msg, idx) in messages"
+            :key="idx"
+            :message="msg"
+          />
+          <div v-if="loading" class="loading-message">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          </div>
         </div>
+        <ChatInput @send="handleSend" />
       </div>
-      <ChatInput @send="handleSend" />
     </main>
   </div>
 </template>
@@ -75,18 +63,8 @@ watch(messages, async () => {
   height: 100vh;
   background: #f7f7f8;
 }
-.sidebar {
-  width: 260px;
-  background: #202123;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1rem 0;
-}
-.sidebar-header {
-  padding: 0 1.5rem 1rem 1.5rem;
-}
+
+
 .new-chat {
   width: 100%;
   padding: 0.7rem 0;
@@ -136,6 +114,20 @@ watch(messages, async () => {
   display: flex;
   flex-direction: column;
   background: #f7f7f8;
+  align-items: center;
+  justify-content: flex-start;
+}
+.chat-container {
+  width: 100%;
+  /* max-width: 720px; */
+  /* margin: 0 auto; */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #f7f7f8;
+  box-sizing: border-box;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 .chat-messages {
   flex: 1;
@@ -167,9 +159,9 @@ watch(messages, async () => {
   40% { opacity: 1; }
 }
 @media (max-width: 800px) {
-  .sidebar { width: 60px; padding: 0; }
-  .sidebar-header, .sidebar-history, .sidebar-footer { padding: 0.5rem; }
-  .sidebar-title, .sidebar-item, .settings, .new-chat { font-size: 0.8rem; }
-  .main-chat { padding: 0; }
+  .chat-container {
+    max-width: 100vw;
+    padding: 0;
+  }
 }
 </style>
