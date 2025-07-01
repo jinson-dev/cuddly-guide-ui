@@ -21,8 +21,8 @@
 </template>
 
 <script setup>
-import { ref, nextTick, watch } from 'vue'
-import axios from 'axios'
+import { ref, nextTick, watch ,reactive} from 'vue'
+import { fetchEventSource } from '@microsoft/fetch-event-source'
 import ChatHeader from './components/ChatHeader.vue'
 import ChatMessage from './components/ChatMessage.vue'
 import ChatInput from './components/ChatInput.vue'
@@ -37,31 +37,73 @@ async function handleSend(text) {
   if (!text.trim()) return
   messages.value.push({ role: 'user', content: text })
   loading.value = true
+
+  // Push a placeholder message we'll fill during streaming
+  const assistantMsg = reactive({ role: 'assistant', content: '' })
+  messages.value.push(assistantMsg)
+
   try {
-    const res = await axios.post('https://fictional-garbanzo-production-4e96.up.railway.app/prompt', {
-      prompt: text
-    })
-    messages.value.push({ role: 'assistant', content: res.data.choices[0].message.content || 'No response.' })
-  } catch (e) {
-    messages.value.push({ role: 'assistant', content: 'Error: Unable to get response from Together AI.' })
-  } finally {
+    await fetchEventSource('https://fictional-garbanzo-production-4e96.up.railway.app/prompt', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'text/event-stream'
+  },
+  body: JSON.stringify({
+    prompt: text,
+    model: 'deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free'
+  }),
+  async onmessage(msg) {
+    try {
+      const clean = msg.data.trim().replace(/^data: /, '')
+    if (clean === '[DONE]') {
+      loading.value = false
+      return
+    }
+    const json = JSON.parse(clean)
+      const delta = json.choices?.[0]?.delta?.content || ''
+      assistantMsg.content += delta
+      await nextTick()
+      scrollToBottom()
+    } catch (err) {
+      console.error('Invalid stream chunk', msg.data)
+    }
+  },
+  onclose() {
     loading.value = false
+  },
+  onerror(err) {
+    console.error('Stream error:', err)
+    loading.value = false
+    assistantMsg.content += '\n\n⚠️ Something went wrong.'
+  }
+})
+
+  } catch (e) {
+    console.error('Fatal error:', e)
+    loading.value = false
+    assistantMsg.content += '\n\n❌ Failed to reach server.'
   }
 }
-
-watch(
-  () => messages.value.length,
-  async () => {
-    await nextTick()
-    if (messagesContainer.value) {
-      messagesContainer.value.scrollTo({
-        top: messagesContainer.value.scrollHeight,
+function scrollToBottom() {
+  nextTick(() => {
+    const el = messagesContainer.value
+    if (el) {
+      el.scrollTo({
+        top: el.scrollHeight,
         behavior: 'smooth'
       })
     }
+  })
+}
+watch(
+  () => messages.value.length,
+  () => {
+    scrollToBottom()
   }
 )
 </script>
+
 
 <style scoped>
 .chatgpt-app {

@@ -89,16 +89,19 @@ function attachCopyButtons() {
 .chat-message {
   display: flex;
   align-items: flex-end;
-  margin-bottom: 1.4rem;
-  transition: all 0.2s cubic-bezier(.4,2,.6,1);
+  margin-bottom: 1.2rem;
 }
 .chat-message.user {
   flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+.chat-message.assistant {
+  justify-content: flex-start;
 }
 .avatar {
-  width: 44px;
-  height: 44px;
-  margin: 0 0.9rem;
+  width: 40px;
+  height: 40px;
+  margin: 0 0.7rem;
   flex-shrink: 0;
 }
 .avatar img {
@@ -106,46 +109,57 @@ function attachCopyButtons() {
   height: 100%;
   border-radius: 50%;
   border: 2px solid #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
 .bubble {
-  max-width: 75vw;
-  padding: 1.1rem 1.5rem;
-  border-radius: 1.5rem;
-  font-size: 1.08rem;
-  line-height: 1.7;
-  background: rgba(255,255,255,0.22);
-  box-shadow: 0 4px 24px 0 rgba(31,38,135,0.10);
   word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  max-width: 80%;
+  min-width: 0;
+  padding: 1rem 1.3rem;
+  border-radius: 1.2rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  word-break: break-word;
+  overflow-wrap: break-word;
   position: relative;
   transition: background 0.2s, color 0.2s;
-  backdrop-filter: blur(12px) saturate(160%);
-  -webkit-backdrop-filter: blur(12px) saturate(160%);
-  border: 1.2px solid rgba(255,255,255,0.28);
+  border: 1px solid #ececec;
 }
 .chat-message.user .bubble {
-  background: rgba(127,156,245,0.22);
+  background: #19c37d;
   color: #fff;
-  border-bottom-right-radius: 0.5rem;
-  border-bottom-left-radius: 1.5rem;
-  box-shadow: 0 2px 12px rgba(127,156,245,0.10);
-  border: 1.2px solid rgba(127,156,245,0.28);
+  border-bottom-right-radius: 0.3rem;
+  border-bottom-left-radius: 1.2rem;
+  border: none;
 }
 .chat-message.assistant .bubble {
-  background: rgba(255,255,255,0.22);
+  background: #f4f6fa;
   color: #222;
-  border-bottom-left-radius: 0.5rem;
-  border-bottom-right-radius: 1.5rem;
-  box-shadow: 0 2px 12px rgba(52,53,65,0.06);
-  border: 1.2px solid rgba(255,255,255,0.28);
+  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 1.2rem;
+  border: 1px solid #ececec;
 }
+:deep(pre) {
+  margin: 0;
+  overflow-x: auto;
+  border-radius: 0.6rem;
+  background: #f6f8fa;
+  max-width: 100%;
+}
+
 :deep(pre code.hljs) {
   display: block;
+  white-space: pre;
+  padding: 1rem;
   overflow-x: auto;
-  padding: 1em;
-  border-radius: 0.7rem;
-  font-size: 0.98rem;
-  background: rgba(255,255,255,0.18);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 .copy-btn {
   position: absolute;
@@ -164,7 +178,7 @@ function attachCopyButtons() {
 }
 @media (max-width: 800px) {
   .bubble {
-    max-width: 95vw;
+    max-width: 100%;
     font-size: 0.97rem;
     padding: 0.9rem 1.1rem;
   }
