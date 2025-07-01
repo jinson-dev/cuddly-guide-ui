@@ -53,7 +53,7 @@ async function handleSend(text) {
     const res = await axios.post('https://fictional-garbanzo-production-4e96.up.railway.app/prompt', {
       prompt: text
     })
-    messages.value.push({ role: 'assistant', content: res.data.choices[0].text || 'No response.' })
+    messages.value.push({ role: 'assistant', content: res.data.choices[0].message.content || 'No response.' })
   } catch (e) {
     messages.value.push({ role: 'assistant', content: 'Error: Unable to get response from Together AI.' })
   } finally {
