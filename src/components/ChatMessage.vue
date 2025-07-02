@@ -121,7 +121,7 @@ function attachCopyButtons() {
   overflow-wrap: anywhere;
   max-width: 80%;
   min-width: 0;
-  padding: 1rem 1.3rem;
+  padding: 1rem 1.2rem;
   border-radius: 1.2rem;
   font-size: 0.8rem;
   line-height: 1.6;

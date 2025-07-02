@@ -26,21 +26,15 @@ function onSend() {
 <style scoped>
 .chat-input {
   display: flex;
-  padding: 1.1rem 1.5rem 1.2rem 1.5rem;
-  background: rgba(255,255,255,0.22);
-  border-top: 1.5px solid rgba(255,255,255,0.28);
-  box-shadow: 0 -2px 16px rgba(52,53,65,0.08);
-  border-radius: 0 0 2rem 2rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
   position: sticky;
   bottom: 0;
   z-index: 10;
-  backdrop-filter: blur(14px) saturate(160%);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
 }
 .chat-input input {
   flex: 1;
   padding: 1rem 1.2rem;
-  border: 1.5px solid rgba(255,255,255,0.28);
+  border: 1.5px solid rgba(33, 135, 219, 0.28);
   border-radius: 1.5rem;
   font-size: 1.08rem;
   outline: none;

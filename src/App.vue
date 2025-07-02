@@ -107,7 +107,6 @@ watch(
 .chatgpt-app {
   display: flex;
   height: 100vh;
-  background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
 }
 
 .main-chat {
@@ -121,20 +120,17 @@ watch(
 
 .chat-container {
   width: 100%;
-  max-width: 650px;
+  max-width: 500px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: rgba(255,255,255,0.18);
   box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
   border-radius: 2rem;
   box-sizing: border-box;
   padding: 0 0 0.5rem 0;
   position: relative;
   transition: box-shadow 0.2s;
-  backdrop-filter: blur(18px) saturate(160%);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
   border: 1.5px solid rgba(255,255,255,0.28);
 }
 
@@ -142,7 +138,7 @@ watch(
   flex: 1;
   overflow-y: auto;
   padding: 2rem 1.2rem 1rem 1.2rem;
-  background: transparent;
+  background: lightgrey;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
