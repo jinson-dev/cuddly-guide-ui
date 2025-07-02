@@ -7,12 +7,18 @@
       @keydown.enter.exact.prevent="onSend"
       autocomplete="off"
     />
-    <button type="submit">Send</button>
+    <button type="submit" :disabled="props.disabled">Send</button>
   </form>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+const props = defineProps({
+  disabled: {
+    type: Boolean,
+    default: false
+  }
+})
 const input = ref('')
 const emit = defineEmits(['send'])
 
@@ -66,6 +72,12 @@ function onSend() {
 }
 .chat-input button:hover {
   background: rgba(127,156,245,0.32);
+}
+.chat-input button:disabled {
+  background: #e0e0e0;
+  color: #aaa;
+  cursor: not-allowed;
+  border: 1.2px solid #eee;
 }
 @media (max-width: 800px) {
   .chat-input {

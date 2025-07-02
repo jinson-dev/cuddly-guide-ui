@@ -4,7 +4,11 @@
     <main class="main-chat">
       <div class="chat-container">
         <ChatHeader />
-        <div class="chat-messages" ref="messagesContainer">
+        <div
+          class="chat-messages"
+          ref="messagesContainer"
+          :class="{ 'electric-border': electric }"
+        >
           <ChatMessage
             v-for="(msg, idx) in messages"
             :key="idx"
@@ -14,7 +18,7 @@
             <span class="dot"></span><span class="dot"></span><span class="dot"></span>
           </div>
         </div>
-        <ChatInput @send="handleSend" />
+        <ChatInput @send="handleSend" :disabled="loading" />
       </div>
     </main>
   </div>
@@ -32,11 +36,18 @@ const messages = ref([
 ])
 const loading = ref(false)
 const messagesContainer = ref(null)
+const electric = ref(false)
 
 async function handleSend(text) {
   if (!text.trim()) return
   messages.value.push({ role: 'user', content: text })
   loading.value = true
+
+  // Trigger electric border animation
+  electric.value = false
+  await nextTick()
+  electric.value = true
+  setTimeout(() => { electric.value = false }, 1200) // duration matches animation
 
   // Push a placeholder message we'll fill during streaming
   const assistantMsg = reactive({ role: 'assistant', content: '' })
@@ -143,6 +154,13 @@ watch(
   flex-direction: column;
   gap: 0.5rem;
   scroll-behavior: smooth;
+  transition: box-shadow 0.3s;
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+.chat-messages::-webkit-scrollbar {
+  display: none;
 }
 
 .loading-message {
@@ -168,6 +186,30 @@ watch(
 @keyframes blink {
   0%, 80%, 100% { opacity: 0.2; }
   40% { opacity: 1; }
+}
+
+.electric-border {
+  position: relative;
+  z-index: 1;
+  animation: electric-glow 1.2s linear;
+  box-shadow: 0 0 16px 4px #00f0ff, 0 0 32px 8px #00f0ff inset;
+}
+@keyframes electric-glow {
+  0% {
+    box-shadow: 0 0 0 0 #00f0ff, 0 0 0 0 #00f0ff inset;
+  }
+  20% {
+    box-shadow: 0 0 8px 2px #00f0ff, 0 0 16px 4px #00f0ff inset;
+  }
+  50% {
+    box-shadow: 0 0 24px 6px #00f0ff, 0 0 48px 12px #00f0ff inset;
+  }
+  80% {
+    box-shadow: 0 0 8px 2px #00f0ff, 0 0 16px 4px #00f0ff inset;
+  }
+  100% {
+    box-shadow: 0 0 0 0 #00f0ff, 0 0 0 0 #00f0ff inset;
+  }
 }
 
 @media (max-width: 800px) {
