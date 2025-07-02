@@ -50,7 +50,7 @@ async function handleSend(text) {
     'Accept': 'text/event-stream'
   },
   body: JSON.stringify({
-    prompt: text,
+    messages:  messages.value.slice(-5),
     model: 'deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free'
   }),
   async onmessage(msg) {
@@ -58,6 +58,9 @@ async function handleSend(text) {
       const clean = msg.data.trim().replace(/^data: /, '')
     if (clean === '[DONE]') {
       loading.value = false
+      if (assistantMsg.content.trim() === '') {
+        assistantMsg.content = '⚠️ (No response received)'
+      }
       return
     }
     const json = JSON.parse(clean)
@@ -88,12 +91,7 @@ async function handleSend(text) {
 function scrollToBottom() {
   nextTick(() => {
     const el = messagesContainer.value
-    if (el) {
-      el.scrollTo({
-        top: el.scrollHeight,
-        behavior: 'smooth'
-      })
-    }
+    el?.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
   })
 }
 watch(
@@ -123,7 +121,7 @@ watch(
 
 .chat-container {
   width: 100%;
-  max-width: 540px;
+  max-width: 650px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;

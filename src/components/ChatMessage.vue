@@ -90,12 +90,17 @@ function attachCopyButtons() {
   display: flex;
   align-items: flex-end;
   margin-bottom: 1.2rem;
+  width: 100%;
 }
 .chat-message.user {
+  display: flex;
+  justify-content: flex-start;
   flex-direction: row-reverse;
-  justify-content: flex-end;
+  flex-wrap: wrap;
+  align-content: space-between;
 }
 .chat-message.assistant {
+  flex-direction: row;
   justify-content: flex-start;
 }
 .avatar {
@@ -114,12 +119,11 @@ function attachCopyButtons() {
 .bubble {
   word-break: break-word;
   overflow-wrap: anywhere;
-  white-space: pre-wrap;
   max-width: 80%;
   min-width: 0;
   padding: 1rem 1.3rem;
   border-radius: 1.2rem;
-  font-size: 1.05rem;
+  font-size: 0.8rem;
   line-height: 1.6;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0,0,0,0.04);
