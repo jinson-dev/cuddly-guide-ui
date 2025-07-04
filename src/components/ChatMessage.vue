@@ -132,6 +132,7 @@ function attachCopyButtons() {
   position: relative;
   transition: background 0.2s, color 0.2s;
   border: 1px solid #ececec;
+  text-align: justify;
 }
 .chat-message.user .bubble {
   background: #19c37d;

@@ -118,6 +118,7 @@ watch(
 .chatgpt-app {
   display: flex;
   height: 100vh;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .main-chat {
